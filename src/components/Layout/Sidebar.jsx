@@ -6,9 +6,11 @@ import {
   GraduationCap,
   BarChart2,
   ClipboardList,
+  Languages,
 } from 'lucide-react'
 
 const NAV_ITEMS = [
+  { to: '/pinyin',   icon: Languages,     label: 'Pinyin' },
   { to: '/vocab',    icon: BookOpen,      label: 'Vocabulary' },
   { to: '/listen',   icon: Volume2,       label: 'Listening' },
   { to: '/write',    icon: PenLine,       label: 'Writing' },

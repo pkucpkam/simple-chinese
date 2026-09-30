@@ -19,6 +19,7 @@
 - [🏮 Simple Chinese — Ứng Dụng Tự Học \& Luyện Thi HSK](#-simple-chinese--ứng-dụng-tự-học--luyện-thi-hsk)
   - [📑 Mục lục](#-mục-lục)
   - [🌟 Tính năng nổi bật](#-tính-năng-nổi-bật)
+    - [0. Học Hán ngữ Bính âm (Pinyin)](#0-học-hán-ngữ-bính-âm-pinyin)
     - [1. Quản lý \& Học từ vựng](#1-quản-lý--học-từ-vựng)
     - [2. Luyện nghe phản xạ](#2-luyện-nghe-phản-xạ)
     - [3. Tập viết chữ Hán tương tác](#3-tập-viết-chữ-hán-tương-tác)
@@ -36,6 +37,13 @@
 ---
 
 ## 🌟 Tính năng nổi bật
+
+### 0. Học Hán ngữ Bính âm (Pinyin)
+- **Bảng âm thanh tương tác**: Đầy đủ 23 Thanh mẫu (Initials), 24 Vận mẫu (Finals) và 5 Thanh điệu (Tones).
+- **Bộ lọc thông minh**: Phân loại theo âm bật hơi, âm uốn lưỡi, âm mặt lưỡi, âm đầu lưỡi, vận mẫu đơn/kép/mũi.
+- **Mẹo phát âm cho người Việt**: Hướng dẫn chi tiết khẩu hình miệng, độ mở vòm họng và vị trí đặt lưỡi.
+- **Luyện nghe phản xạ (Audio Quiz)**: Bài tập trắc nghiệm phân biệt các cặp âm dễ nhầm (p/b, q/j, zh/ch, s/sh, thanh 1/4).
+- **Cẩm nang biến điệu (Tone Sandhi)**: Quy tắc 3+3 -> 2+3, biến điệu của "不" và "一", quy tắc bỏ dấu 2 chấm của "ü".
 
 ### 1. Quản lý & Học từ vựng
 - **Thẻ Flashcard thông minh**: Hiển thị Hán tự, phiên âm Pinyin, nghĩa tiếng Việt, phân loại từ loại và câu ví dụ sinh động.

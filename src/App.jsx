@@ -6,6 +6,7 @@ import WritingPractice from './features/writing/WritingPractice'
 import GrammarPractice from './features/grammar/GrammarPractice'
 import ProgressDashboard from './features/progress/ProgressDashboard'
 import MockExam from './features/exam/MockExam'
+import PinyinPractice from './features/pinyin/PinyinPractice'
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<AppShell />}>
           <Route index element={<Navigate to="/vocab" replace />} />
+          <Route path="pinyin" element={<PinyinPractice />} />
           <Route path="vocab" element={<VocabManager />} />
           <Route path="listen" element={<ListeningPractice />} />
           <Route path="write" element={<WritingPractice />} />

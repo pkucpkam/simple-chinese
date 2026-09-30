@@ -1,7 +1,8 @@
 import { NavLink } from 'react-router-dom'
-import { BookOpen, Volume2, PenLine, GraduationCap, BarChart2, ClipboardList } from 'lucide-react'
+import { BookOpen, Volume2, PenLine, GraduationCap, BarChart2, ClipboardList, Languages } from 'lucide-react'
 
 const NAV_ITEMS = [
+  { to: '/pinyin',   icon: Languages,     label: 'Pinyin' },
   { to: '/vocab',    icon: BookOpen,      label: 'Vocab' },
   { to: '/listen',   icon: Volume2,       label: 'Listen' },
   { to: '/write',    icon: PenLine,       label: 'Write' },
