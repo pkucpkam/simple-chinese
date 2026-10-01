@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { X } from 'lucide-react'
-import { generateId } from './mockData'
+import { generateId } from '../../data/data'
 
 const EMPTY_FORM = {
   hanzi: '',

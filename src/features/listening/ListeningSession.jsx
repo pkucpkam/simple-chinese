@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Play, Pause, ChevronRight, RotateCcw, Turtle, Zap } from 'lucide-react'
 import { useSpeech } from './useSpeech'
-import { MOCK_VOCAB } from '../vocab/mockData'
+import { vocabRepository } from '../../data/repositories'
 
 // Build 4 MC options: 1 correct + 3 random distractors from the full pool
 function buildChoices(correctWord, allWords) {
@@ -48,7 +48,7 @@ export default function ListeningSession({ session, onFinish }) {
   // Build choices when question changes
   useEffect(() => {
     if (mode === 'multiple-choice') {
-      setChoices(buildChoices(current, MOCK_VOCAB))
+      setChoices(buildChoices(current, vocabRepository.list()))
     }
     setAnswered(false)
     setSelected(null)

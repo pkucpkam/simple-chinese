@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { X, AlertCircle, CheckCircle2, Upload } from 'lucide-react'
-import { generateId } from './mockData'
+import { generateId } from '../../data/data'
 
 // Parse a single line: "汉字 | pinyin | meaning | HSK" or tab-separated
 function parseLine(line) {

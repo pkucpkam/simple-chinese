@@ -1,4 +1,4 @@
-import { DAILY_DATA } from './mockProgressData'
+import { DAILY_DATA } from '../../data/data'
 
 /**
  * Heatmap-style activity calendar — last 30 days

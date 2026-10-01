@@ -1,5 +1,5 @@
 import { Flame, BookOpen, Clock, Calendar } from 'lucide-react'
-import { STATS } from './mockProgressData'
+import { STATS } from '../../data/data'
 
 function StatCard({ icon: Icon, label, value, sub, color, id }) {
   return (

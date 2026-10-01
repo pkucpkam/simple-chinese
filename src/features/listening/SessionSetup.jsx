@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Volume2, BookOpen, Gauge, Hash, ArrowRight, Headphones } from 'lucide-react'
-import { MOCK_VOCAB } from '../vocab/mockData'
+import { vocabRepository } from '../../data/repositories'
 
 const MODES = [
   {
@@ -36,7 +36,7 @@ export default function SessionSetup({ onStart }) {
   const [hsk, setHsk] = useState('all')
   const [count, setCount] = useState(10)
 
-  const pool = MOCK_VOCAB.filter(w =>
+  const pool = vocabRepository.list().filter(w =>
     hsk === 'all' ? true : w.hsk === Number(hsk)
   )
   const available = pool.length
