@@ -8,14 +8,17 @@ import ProgressDashboard from './features/progress/ProgressDashboard'
 import MockExam from './features/exam/MockExam'
 import PinyinPractice from './features/pinyin/PinyinPractice'
 import LearningPath from './features/learning/LearningPath'
+import LessonPlayer from './features/learning/LessonPlayer'
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<AppShell />}>
-          <Route index element={<Navigate to="/vocab" replace />} />
+          <Route index element={<Navigate to="/learn" replace />} />
           <Route path="learn" element={<LearningPath />} />
+          <Route path="lesson" element={<LessonPlayer />} />
+          <Route path="lesson/:lessonId" element={<LessonPlayer />} />
           <Route path="pinyin" element={<PinyinPractice />} />
           <Route path="vocab" element={<VocabManager />} />
           <Route path="listen" element={<ListeningPractice />} />
