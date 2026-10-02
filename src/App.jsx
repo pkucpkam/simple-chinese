@@ -9,6 +9,7 @@ import MockExam from './features/exam/MockExam'
 import PinyinPractice from './features/pinyin/PinyinPractice'
 import LearningPath from './features/learning/LearningPath'
 import LessonPlayer from './features/learning/LessonPlayer'
+import ContentStudio from './features/studio/ContentStudio'
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
           <Route path="learn" element={<LearningPath />} />
           <Route path="lesson" element={<LessonPlayer />} />
           <Route path="lesson/:lessonId" element={<LessonPlayer />} />
+          <Route path="studio" element={<ContentStudio />} />
           <Route path="pinyin" element={<PinyinPractice />} />
           <Route path="vocab" element={<VocabManager />} />
           <Route path="listen" element={<ListeningPractice />} />

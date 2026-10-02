@@ -17,8 +17,23 @@ import {
 import { LEARNING_LEVELS, STUDY_RHYTHM } from './learningData'
 import { createCardFromWord, scheduleReview } from '../lib/srs'
 
-function createMemoryRepository(seed) {
+function createMemoryRepository(seed, storageKey = '') {
   let records = [...seed]
+
+  if (storageKey && typeof localStorage !== 'undefined') {
+    try {
+      const saved = JSON.parse(localStorage.getItem(storageKey) || 'null')
+      if (Array.isArray(saved)) records = saved
+    } catch {
+      records = [...seed]
+    }
+  }
+
+  function persist() {
+    if (storageKey && typeof localStorage !== 'undefined') {
+      localStorage.setItem(storageKey, JSON.stringify(records))
+    }
+  }
 
   return {
     list() {
@@ -29,6 +44,7 @@ function createMemoryRepository(seed) {
     },
     create(record) {
       records = [record, ...records]
+      persist()
       return record
     },
     update(id, changes) {
@@ -36,15 +52,17 @@ function createMemoryRepository(seed) {
       if (!current) return null
       const updated = { ...current, ...changes, id }
       records = records.map(record => record.id === id ? updated : record)
+      persist()
       return updated
     },
     remove(id) {
       records = records.filter(record => record.id !== id)
+      persist()
     },
   }
 }
 
-export const vocabRepository = createMemoryRepository(VOCAB_DATA)
+export const vocabRepository = createMemoryRepository(VOCAB_DATA, 'simple-chinese:vocab')
 
 const SRS_STORAGE_KEY = 'simple-chinese:srs'
 
