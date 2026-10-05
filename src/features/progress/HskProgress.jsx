@@ -1,7 +1,7 @@
 import {
   RadialBarChart, RadialBar, Tooltip, ResponsiveContainer,
 } from 'recharts'
-import { HSK_PROGRESS } from './mockProgressData'
+import { HSK_PROGRESS } from '../../data/data'
 
 function HskBar({ item }) {
   const pct = Math.round((item.mastered / item.target) * 100)

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Plus, Upload, Search, X } from 'lucide-react'
-import { MOCK_VOCAB } from './mockData'
+import { vocabRepository } from '../../data/repositories'
 import VocabForm from './VocabForm'
 import BulkImport from './BulkImport'
 import VocabList from './VocabList'
@@ -14,7 +14,7 @@ const HSK_TABS = [
 ]
 
 export default function VocabManager() {
-  const [words, setWords] = useState(MOCK_VOCAB)
+  const [words, setWords] = useState(() => vocabRepository.list())
   const [showForm, setShowForm] = useState(false)
   const [editingWord, setEditingWord] = useState(null)
   const [showBulk, setShowBulk] = useState(false)
@@ -31,21 +31,25 @@ export default function VocabManager() {
   }
 
   function handleAddWord(newWord) {
-    setWords(prev => [newWord, ...prev])
+    vocabRepository.create(newWord)
+    setWords(vocabRepository.list())
     setShowForm(false)
   }
 
   function handleUpdateWord(updated) {
-    setWords(prev => prev.map(w => w.id === updated.id ? updated : w))
+    vocabRepository.update(updated.id, updated)
+    setWords(vocabRepository.list())
     setEditingWord(null)
   }
 
   function handleDeleteWord(id) {
-    setWords(prev => prev.filter(w => w.id !== id))
+    vocabRepository.remove(id)
+    setWords(vocabRepository.list())
   }
 
   function handleBulkImport(newWords) {
-    setWords(prev => [...newWords, ...prev])
+    newWords.forEach(word => vocabRepository.create(word))
+    setWords(vocabRepository.list())
   }
 
   function handleEditClick(word) {

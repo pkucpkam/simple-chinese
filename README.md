@@ -10,6 +10,8 @@
 
 **Simple Chinese** là nền tảng web hiện đại hỗ trợ người học tiếng Trung tự học từ vựng, rèn luyện kỹ năng nghe, tập viết chữ Hán, nắm vững ngữ pháp và thi thử mô phỏng đề thi HSK (tập trung HSK 1 – HSK 3).
 
+📘 **Manual học tập:** [manual.md](manual.md)
+
 </div>
 
 ---

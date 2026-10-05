@@ -10,7 +10,7 @@ import {
   ArrowRight,
   HelpCircle,
 } from 'lucide-react'
-import { QUIZ_QUESTIONS } from './pinyinData'
+import { QUIZ_QUESTIONS } from '../../data/data'
 
 export default function PinyinQuiz({ speak, rate }) {
   const [questions, setQuestions] = useState([])

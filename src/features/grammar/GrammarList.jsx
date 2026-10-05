@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { GraduationCap, ChevronRight, CheckCircle2, BookOpen } from 'lucide-react'
-import { GRAMMAR_POINTS } from './mockGrammar'
+import { GRAMMAR_POINTS } from '../../data/data'
 
 const HSK_FILTERS = [
   { value: 'all', label: 'All' },

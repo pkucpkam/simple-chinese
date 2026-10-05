@@ -1,5 +1,5 @@
 import { ClipboardList, Clock, Target, ChevronRight, BookOpen, Volume2, PenLine } from 'lucide-react'
-import { EXAM_SECTIONS } from './mockExamData'
+import { EXAM_SECTIONS } from '../../data/data'
 
 const SECTION_ICONS = { listening: Volume2, reading: BookOpen, writing: PenLine }
 

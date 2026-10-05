@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { PenLine, BookOpen, Hash, ArrowRight, Layers } from 'lucide-react'
-import { MOCK_VOCAB } from '../vocab/mockData'
+import { vocabRepository } from '../../data/repositories'
 
 const HSK_FILTERS = [
   { value: 'all', label: 'All Levels' },
@@ -38,11 +38,11 @@ export default function WritingSetup({ onStart }) {
   const [count, setCount] = useState(10)
 
   // Only use single-character words — hanzi-writer works best with 1 char
-  const pool = MOCK_VOCAB.filter(w =>
+  const pool = vocabRepository.list().filter(w =>
     (hsk === 'all' ? true : w.hsk === Number(hsk)) && [...w.hanzi].length === 1
   )
   // For multi-char words, practice the first character
-  const fullPool = MOCK_VOCAB.filter(w =>
+  const fullPool = vocabRepository.list().filter(w =>
     hsk === 'all' ? true : w.hsk === Number(hsk)
   )
   const available = fullPool.length

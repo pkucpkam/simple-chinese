@@ -2,7 +2,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer, Cell,
 } from 'recharts'
-import { WEEKLY_SKILL, STATS } from './mockProgressData'
+import { WEEKLY_SKILL, STATS } from '../../data/data'
 import { BookOpen, Volume2, PenLine, GraduationCap } from 'lucide-react'
 
 const SKILL_ICONS = {

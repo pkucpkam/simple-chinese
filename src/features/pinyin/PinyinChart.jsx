@@ -10,7 +10,7 @@ import {
   RotateCcw,
   BookOpen,
 } from 'lucide-react'
-import { INITIALS, FINALS, TONES } from './pinyinData'
+import { INITIALS, FINALS, TONES } from '../../data/data'
 
 export default function PinyinChart({ speak, speaking, rate, setRate }) {
   const [activeSubTab, setActiveSubTab] = useState('initials') // 'initials' | 'finals' | 'tones'
