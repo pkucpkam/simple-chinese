@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import { ArrowLeft, CheckCircle2, ChevronRight, Headphones, NotebookText, Play, Sparkles } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { evaluateExercise } from '../../lib/exercise-engine'
+import { courseRepository, findAuthoredLesson, lessonProgressRepository, selectGrammarForStep, selectListeningQuestionsForStep, selectWordsForStep } from '../../data/contentRepository'
+import { examRepository, grammarRepository, vocabRepository } from '../../data/repositories'
 
 const STORAGE_KEY = 'simple-chinese-lesson-player'
 
@@ -45,6 +47,100 @@ const defaultProgress = {
   completed: false,
 }
 
+function AuthoredLessonView({ lesson }) {
+  const [progress, setProgress] = useState(() => lessonProgressRepository.get(lesson.id))
+  const completedSteps = progress.completedSteps || {}
+  const steps = Array.isArray(lesson.steps) ? lesson.steps : []
+  const words = vocabRepository.list()
+  const completedCount = steps.filter((_, index) => completedSteps[index]).length
+
+  function toggleStep(index) {
+    setProgress(current => {
+      const next = {
+        ...current,
+        completedSteps: { ...current.completedSteps, [index]: !current.completedSteps?.[index] },
+      }
+      next.completed = steps.length > 0 && steps.every((_, stepIndex) => next.completedSteps[stepIndex])
+      lessonProgressRepository.save(lesson.id, next)
+      return next
+    })
+  }
+
+  return (
+    <div className="max-w-4xl mx-auto px-4 py-8 sm:px-6">
+      <div className="mb-6 flex items-center justify-between">
+        <Link to="/learn" className="inline-flex items-center gap-2 text-[#b3b3b3] hover:text-white text-sm">
+          <ArrowLeft size={16} /> Quay lại lộ trình
+        </Link>
+        <span className="rounded-full border border-[#539df5]/30 bg-[#539df5]/10 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-[#539df5]">
+          Studio lesson
+        </span>
+      </div>
+
+      <div className="rounded-3xl border border-[#4d4d4d]/25 bg-[#181818] p-5 sm:p-6">
+        <p className="text-xs uppercase tracking-[0.2em] text-[#1ed760] font-bold">{lesson.courseTitle || lesson.courseId}</p>
+        <h1 className="mt-2 text-2xl font-bold text-white">{lesson.title}</h1>
+        <p className="mt-2 text-sm leading-relaxed text-[#b3b3b3]">Hoàn thành từng bước để học bài này theo thứ tự đã cấu hình.</p>
+
+        <div className="mt-6 flex items-center justify-between text-xs text-[#b3b3b3]">
+          <span>Tiến độ bài học</span>
+          <span>{completedCount}/{steps.length}</span>
+        </div>
+        <div className="mt-2 h-2 overflow-hidden rounded-full bg-[#1f1f1f]">
+          <div className="h-full rounded-full bg-[#1ed760] transition-all" style={{ width: `${steps.length ? (completedCount / steps.length) * 100 : 0}%` }} />
+        </div>
+
+        <div className="mt-6 space-y-2">
+          {steps.length === 0 ? (
+            <p className="rounded-xl border border-dashed border-[#4d4d4d]/40 p-4 text-sm text-[#b3b3b3]">Bài học này chưa có bước học.</p>
+          ) : steps.map((step, index) => (
+            <button
+              key={`${lesson.id}-${index}`}
+              type="button"
+              onClick={() => toggleStep(index)}
+              className={`flex w-full items-center gap-3 rounded-xl border p-4 text-left transition-colors ${completedSteps[index] ? 'border-[#1ed760]/30 bg-[#1ed760]/10' : 'border-[#4d4d4d]/20 bg-[#1f1f1f]/70 hover:border-[#7c7c7c]'}`}
+            >
+              <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold ${completedSteps[index] ? 'bg-[#1ed760] text-black' : 'bg-[#121212] text-[#b3b3b3]'}`}>
+                {index + 1}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-sm font-semibold text-white">{step.title || step.kind}</span>
+                <span className="mt-1 block text-xs text-[#7c7c7c]">Bước {step.kind}</span>
+                {step.kind === 'words' && selectWordsForStep(words, step).length > 0 && (
+                  <span className="mt-3 grid gap-1 sm:grid-cols-2">
+                    {selectWordsForStep(words, step).map(word => (
+                      <span key={word.id} className="rounded-lg bg-[#121212] px-2 py-1.5 text-xs text-[#d9d9d9]">
+                        <strong className="text-white">{word.hanzi}</strong> · {word.pinyin || 'Chưa có pinyin'} · {word.meaning || 'Chưa có nghĩa'}
+                      </span>
+                    ))}
+                  </span>
+                )}
+                {step.kind === 'grammar' && selectGrammarForStep(grammarRepository.list(), step) && (
+                  <span className="mt-3 block rounded-lg bg-[#121212] px-3 py-2 text-xs text-[#d9d9d9]">
+                    <strong className="text-white">{selectGrammarForStep(grammarRepository.list(), step).pattern}</strong>
+                    <span className="mt-1 block text-[#b3b3b3]">{selectGrammarForStep(grammarRepository.list(), step).summary}</span>
+                  </span>
+                )}
+                {step.kind === 'listen' && selectListeningQuestionsForStep(examRepository.listQuestions('listening'), step).length > 0 && (
+                  <span className="mt-3 grid gap-2">
+                    {selectListeningQuestionsForStep(examRepository.listQuestions('listening'), step).map(question => (
+                      <span key={question.id} className="rounded-lg bg-[#121212] px-3 py-2 text-xs text-[#d9d9d9]">
+                        <strong className="block text-white">{question.prompt}</strong>
+                        <span className="mt-1 block text-[#7c7c7c]">{question.options.join(' · ')}</span>
+                      </span>
+                    ))}
+                  </span>
+                )}
+              </span>
+              {completedSteps[index] ? <CheckCircle2 size={17} className="text-[#1ed760]" /> : <ChevronRight size={17} className="text-[#7c7c7c]" />}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function readProgress() {
   if (typeof window === 'undefined') return defaultProgress
 
@@ -59,6 +155,8 @@ function readProgress() {
 }
 
 export default function LessonPlayer() {
+  const { lessonId } = useParams()
+  const authoredLesson = lessonId ? findAuthoredLesson(courseRepository.list(), lessonId) : null
   const [progress, setProgress] = useState(readProgress)
   const [selectedAnswer, setSelectedAnswer] = useState('')
   const [result, setResult] = useState(null)
@@ -73,6 +171,8 @@ export default function LessonPlayer() {
     const answered = Object.keys(progress.answered).length
     return Math.round((answered / LESSON.exercises.length) * 100)
   }, [progress.answered])
+
+  if (authoredLesson) return <AuthoredLessonView lesson={authoredLesson} />
 
   const handleSubmit = () => {
     const nextResult = evaluateExercise(currentExercise, selectedAnswer)

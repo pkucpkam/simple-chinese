@@ -15,6 +15,7 @@ import {
   Volume2,
 } from 'lucide-react'
 import { learningRepository } from '../../data/repositories'
+import { courseRepository, listAuthoredLessons } from '../../data/contentRepository'
 
 const ICONS = {
   book: BookOpen,
@@ -44,6 +45,7 @@ function readChecks() {
 
 export default function LearningPath() {
   const level = LEARNING_LEVELS[0]
+  const authoredLessons = listAuthoredLessons(courseRepository.list())
   const [selectedStageId, setSelectedStageId] = useState(DEFAULT_STAGE.id)
   const [completed, setCompleted] = useState(readChecks)
   const selectedStage = level.stages.find(stage => stage.id === selectedStageId) || DEFAULT_STAGE
@@ -137,6 +139,34 @@ export default function LearningPath() {
                 </button>
               )
             })}
+          </div>
+        </section>
+
+        <section className="bg-[#181818] border border-[#4d4d4d]/25 rounded-2xl p-5 sm:p-6">
+          <div className="flex items-end justify-between gap-4 mb-4">
+            <div>
+              <p className="text-[#1ed760] text-xs uppercase tracking-wider font-semibold">Nội dung từ Studio</p>
+              <h2 className="text-white font-bold text-lg mt-1">Bài học đã tạo</h2>
+            </div>
+            <Link to="/studio" className="text-[#b3b3b3] hover:text-white text-xs font-semibold">Mở Studio</Link>
+          </div>
+
+          <div className="grid gap-2 sm:grid-cols-2">
+            {authoredLessons.map(lesson => (
+              <Link
+                key={lesson.id}
+                to={`/lesson/${lesson.id}`}
+                className="rounded-xl border border-[#4d4d4d]/20 bg-[#1f1f1f]/70 p-3 hover:border-[#1ed760]/50 transition-colors"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="text-white text-sm font-semibold truncate">{lesson.title}</p>
+                    <p className="text-[#7c7c7c] text-xs mt-1">{lesson.courseTitle} · {(lesson.steps || []).length} bước</p>
+                  </div>
+                  <ChevronRight size={16} className="text-[#7c7c7c] shrink-0" />
+                </div>
+              </Link>
+            ))}
           </div>
         </section>
 

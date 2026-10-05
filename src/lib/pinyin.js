@@ -97,6 +97,54 @@ export function syllableToMarked(raw) {
   return base.slice(0, idx) + marks[tone - 1] + base.slice(idx + 1)
 }
 
+export function phraseToMarked(raw) {
+  return String(raw || '')
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((syllable) => syllableToMarked(syllable))
+    .join(' ')
+}
+
+function convertMarkedSyllableToNumeric(value = '') {
+  const cleaned = String(value)
+    .trim()
+    .toLowerCase()
+    .replace(/u:/g, 'ü')
+    .replace(/v/g, 'ü')
+    .replace(/['’]/g, '')
+
+  if (!cleaned) return ''
+
+  let base = ''
+  let toneNumber = 5
+
+  for (const char of cleaned) {
+    const toneEntry = TONE_MARK_TO_NUMERIC.get(char)
+    if (toneEntry) {
+      const baseChar = toneEntry.slice(0, -1)
+      base += baseChar
+      toneNumber = Number(toneEntry.slice(-1))
+      continue
+    }
+
+    if (/[a-zü]/.test(char)) {
+      base += char
+    }
+  }
+
+  return `${base}${toneNumber}`
+}
+
+export function markedToNumeric(raw) {
+  return String(raw || '')
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((syllable) => convertMarkedSyllableToNumeric(syllable))
+    .join(' ')
+}
+
 export function normalizePinyin(input) {
   if (typeof input !== 'string') return ''
 
