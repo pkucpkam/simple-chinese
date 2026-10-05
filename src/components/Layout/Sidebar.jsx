@@ -7,9 +7,13 @@ import {
   BarChart2,
   ClipboardList,
   Languages,
+  Map,
+  Sparkles,
 } from 'lucide-react'
 
 const NAV_ITEMS = [
+  { to: '/learn',    icon: Map,          label: 'Learning Path' },
+  { to: '/studio',   icon: Sparkles,     label: 'Content Studio' },
   { to: '/pinyin',   icon: Languages,     label: 'Pinyin' },
   { to: '/vocab',    icon: BookOpen,      label: 'Vocabulary' },
   { to: '/listen',   icon: Volume2,       label: 'Listening' },

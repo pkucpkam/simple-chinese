@@ -7,7 +7,7 @@ const SORT_OPTIONS = [
   { value: 'hsk', label: 'HSK Level' },
 ]
 
-export default function VocabList({ words, onEdit, onDelete, search, hskFilter, sort, onSortChange }) {
+export default function VocabList({ words, onEdit, onDelete, onReview, search, hskFilter, sort, onSortChange }) {
   const filtered = useMemo(() => {
     let result = [...words]
 
@@ -78,6 +78,7 @@ export default function VocabList({ words, onEdit, onDelete, search, hskFilter, 
               word={word}
               onEdit={onEdit}
               onDelete={onDelete}
+              onReview={onReview}
             />
           ))}
         </div>

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Plus, Upload, Search, X } from 'lucide-react'
-import { MOCK_VOCAB } from './mockData'
+import { srsRepository, vocabRepository } from '../../data/repositories'
+import { isLeech, isMastered } from '../../lib/srs'
 import VocabForm from './VocabForm'
 import BulkImport from './BulkImport'
 import VocabList from './VocabList'
@@ -14,7 +15,7 @@ const HSK_TABS = [
 ]
 
 export default function VocabManager() {
-  const [words, setWords] = useState(MOCK_VOCAB)
+  const [words, setWords] = useState(() => vocabRepository.list())
   const [showForm, setShowForm] = useState(false)
   const [editingWord, setEditingWord] = useState(null)
   const [showBulk, setShowBulk] = useState(false)
@@ -29,23 +30,39 @@ export default function VocabManager() {
     2: words.filter(w => w.hsk === 2).length,
     3: words.filter(w => w.hsk === 3).length,
   }
+  const now = Date.now()
+  const srsCards = words.map(word => srsRepository.getCard(word))
+  const srsCounts = {
+    due: srsCards.filter(card => card.due <= now).length,
+    mastered: srsCards.filter(isMastered).length,
+    leeches: srsCards.filter(isLeech).length,
+  }
 
   function handleAddWord(newWord) {
-    setWords(prev => [newWord, ...prev])
+    vocabRepository.create(newWord)
+    setWords(vocabRepository.list())
     setShowForm(false)
   }
 
   function handleUpdateWord(updated) {
-    setWords(prev => prev.map(w => w.id === updated.id ? updated : w))
+    vocabRepository.update(updated.id, updated)
+    setWords(vocabRepository.list())
     setEditingWord(null)
   }
 
   function handleDeleteWord(id) {
-    setWords(prev => prev.filter(w => w.id !== id))
+    vocabRepository.remove(id)
+    srsRepository.removeByWordId(id)
+    setWords(vocabRepository.list())
+  }
+
+  function handleReview(word, rating) {
+    return srsRepository.review(word, rating)
   }
 
   function handleBulkImport(newWords) {
-    setWords(prev => [...newWords, ...prev])
+    newWords.forEach(word => vocabRepository.create(word))
+    setWords(vocabRepository.list())
   }
 
   function handleEditClick(word) {
@@ -99,12 +116,15 @@ export default function VocabManager() {
       <div className="max-w-5xl mx-auto px-6 py-6 space-y-6">
 
         {/* ── Stats Bar ── */}
-        <div className="grid grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {[
             { label: 'Total', value: counts.all, color: 'text-white' },
             { label: 'HSK 1', value: counts[1], color: 'text-[#1ed760]' },
             { label: 'HSK 2', value: counts[2], color: 'text-[#539df5]' },
             { label: 'HSK 3', value: counts[3], color: 'text-[#ffa42b]' },
+            { label: 'Due today', value: srsCounts.due, color: 'text-[#f7c948]' },
+            { label: 'Mastered', value: srsCounts.mastered, color: 'text-[#539df5]' },
+            { label: 'Leech', value: srsCounts.leeches, color: 'text-[#f3727f]' },
           ].map(stat => (
             <div key={stat.label} className="bg-[#181818] rounded-2xl px-4 py-3 text-center border border-[#4d4d4d]/20">
               <p className={`text-2xl font-bold ${stat.color}`}>{stat.value}</p>
@@ -179,6 +199,7 @@ export default function VocabManager() {
               words={words}
               onEdit={handleEditClick}
               onDelete={handleDeleteWord}
+              onReview={handleReview}
               search={search}
               hskFilter={hskFilter}
               sort={sort}

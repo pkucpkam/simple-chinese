@@ -4,7 +4,7 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer, Legend,
 } from 'recharts'
-import { CHART_DATA } from './mockProgressData'
+import { CHART_DATA } from '../../data/data'
 
 const METRICS = [
   { key: 'cumulativeWords', label: 'Total Words',   color: '#1ed760' },

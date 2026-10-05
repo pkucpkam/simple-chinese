@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react'
 import { ChevronLeft, ChevronRight, SkipForward } from 'lucide-react'
 import ExamTimer from './ExamTimer'
 import ExamSection from './ExamSection'
-import { EXAM_SECTIONS, ALL_QUESTIONS } from './mockExamData'
+import { EXAM_SECTIONS, ALL_QUESTIONS } from '../../data/data'
 
 export default function ExamSession({ onFinish }) {
   const [sectionIdx, setSectionIdx] = useState(0)

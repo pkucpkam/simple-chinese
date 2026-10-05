@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Volume2, Sparkles, AlertCircle, ArrowRight, CheckCircle2 } from 'lucide-react'
-import { TONE_RULES } from './pinyinData'
+import { TONE_RULES } from '../../data/data'
 
 export default function PinyinToneRules({ speak, rate }) {
   const [playingId, setPlayingId] = useState(null)
