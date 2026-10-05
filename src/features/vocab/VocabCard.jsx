@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { Pencil, Trash2, ChevronDown, ChevronUp } from 'lucide-react'
+import { isLeech, isMastered } from '../../lib/srs'
+import { srsRepository } from '../../data/repositories'
 
 const HSK_STYLES = {
   1: { badge: 'bg-[#1ed760]/15 text-[#1ed760]', border: 'border-[#1ed760]/10' },
@@ -7,14 +9,28 @@ const HSK_STYLES = {
   3: { badge: 'bg-[#ffa42b]/15 text-[#ffa42b]', border: 'border-[#ffa42b]/10' },
 }
 
-export default function VocabCard({ word, onEdit, onDelete }) {
+export default function VocabCard({ word, onEdit, onDelete, onReview }) {
   const [expanded, setExpanded] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState(false)
+  const [card, setCard] = useState(() => srsRepository.getCard(word))
   const style = HSK_STYLES[word.hsk] || HSK_STYLES[1]
+
+  const reviewState = isMastered(card)
+    ? 'Đã thuộc'
+    : isLeech(card)
+      ? 'Leech'
+      : card.intervalDays > 0
+        ? 'Đang ôn'
+        : 'Mới'
 
   function handleDelete() {
     if (!confirmDelete) { setConfirmDelete(true); return }
     onDelete(word.id)
+  }
+
+  function handleReview(rating) {
+    const next = onReview ? onReview(word, rating) : srsRepository.review(word, rating)
+    if (next) setCard(next)
   }
 
   return (
@@ -63,6 +79,24 @@ export default function VocabCard({ word, onEdit, onDelete }) {
 
       {/* Meaning */}
       <p className="text-[#cbcbcb] text-sm leading-relaxed">{word.meaning}</p>
+
+      <div className="flex items-center justify-between gap-3 rounded-xl bg-[#121212] px-3 py-2 text-[11px] text-[#b3b3b3] border border-[#4d4d4d]/20">
+        <span className="font-semibold text-[#1ed760]">SRS</span>
+        <span>{reviewState}</span>
+        <span>{card.intervalDays}d</span>
+      </div>
+
+      <div className="grid grid-cols-3 gap-2">
+        {[1, 3, 4].map(rating => (
+          <button
+            key={rating}
+            onClick={() => handleReview(rating)}
+            className="rounded-lg border border-[#4d4d4d] bg-[#1f1f1f] px-2 py-1.5 text-[11px] font-semibold text-[#d9d9d9] transition hover:border-[#1ed760] hover:text-white"
+          >
+            {rating === 1 ? 'Again' : rating === 3 ? 'Good' : 'Easy'}
+          </button>
+        ))}
+      </div>
 
       {/* Example — collapsible */}
       {word.example && (

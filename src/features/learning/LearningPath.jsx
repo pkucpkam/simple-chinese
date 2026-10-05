@@ -155,6 +155,9 @@ export default function LearningPath() {
               {selectedActions.map(action => {
                 const Icon = ICONS[action.icon] || BookOpen
                 const isDone = Boolean(completed[action.id])
+                const isLessonAction = action.id === 'pinyin-chart' || action.id === 'tone-rules'
+                const targetTo = isLessonAction ? '/lesson' : action.to
+
                 return (
                   <div key={action.id} className={`flex items-center gap-3 border rounded-xl p-3 transition-colors ${isDone ? 'bg-[#1ed760]/5 border-[#1ed760]/25' : 'bg-[#1f1f1f]/60 border-[#4d4d4d]/20'}`}>
                     <button
@@ -171,7 +174,7 @@ export default function LearningPath() {
                       <p className={`text-sm font-semibold ${isDone ? 'text-[#b3b3b3] line-through' : 'text-white'}`}>{action.label}</p>
                       <p className="text-[#7c7c7c] text-xs mt-0.5">{action.detail} · {action.minutes} phút</p>
                     </div>
-                    <Link to={action.to} aria-label={`Mở ${action.label}`} className="text-[#7c7c7c] hover:text-white p-1 transition-colors">
+                    <Link to={targetTo} aria-label={`Mở ${action.label}`} className="text-[#7c7c7c] hover:text-white p-1 transition-colors">
                       <ChevronRight size={18} />
                     </Link>
                   </div>

@@ -1,0 +1,73 @@
+export const hsk1UnitMap = {
+  你好: 'u01',
+  谢谢: 'u01',
+  再见: 'u01',
+  朋友: 'u02',
+  学生: 'u02',
+  老师: 'u02',
+  一: 'u03',
+  二: 'u03',
+  三: 'u03',
+  朋友: 'u04',
+  爸爸: 'u04',
+  妈妈: 'u04',
+  今天: 'u05',
+  明天: 'u05',
+  早上: 'u05',
+}
+
+export const hsk1WordSeed = [
+  {
+    id: 'w_000001',
+    hanzi: '你好',
+    pinyin: 'ni3 hao3',
+    meaningVi: ['xin chào'],
+    levels: { 'hsk2.0': 1, 'hsk3.0': 1 },
+    unitId: 'u01',
+    sampleSentence: '你好！',
+    tags: [],
+    source: 'system',
+  },
+  {
+    id: 'w_000002',
+    hanzi: '谢谢',
+    pinyin: 'xie4 xie5',
+    meaningVi: ['cảm ơn'],
+    levels: { 'hsk2.0': 1, 'hsk3.0': 1 },
+    unitId: 'u01',
+    sampleSentence: '谢谢你。',
+    tags: [],
+    source: 'system',
+  },
+  {
+    id: 'w_000003',
+    hanzi: '再见',
+    pinyin: 'zai4 jian4',
+    meaningVi: ['tạm biệt'],
+    levels: { 'hsk2.0': 1, 'hsk3.0': 1 },
+    unitId: 'u01',
+    sampleSentence: '再见！',
+    tags: [],
+    source: 'system',
+  },
+]
+
+export const hsk1ExerciseSeed = [
+  {
+    id: 'e_u01_001',
+    type: 'mcq_meaning',
+    skill: 'vocab',
+    unitId: 'u01',
+    prompt: '你好',
+    options: ['xin chào', 'tạm biệt', 'cảm ơn', 'xin lỗi'],
+    answer: 0,
+  },
+  {
+    id: 'e_u01_002',
+    type: 'type_pinyin',
+    skill: 'pinyin',
+    unitId: 'u01',
+    hanzi: '再见',
+    answers: ['zai4 jian4'],
+  },
+]
